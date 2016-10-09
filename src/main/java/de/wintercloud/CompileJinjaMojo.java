@@ -30,6 +30,7 @@ import org.yaml.snakeyaml.Yaml;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.Map;
 
 /**
@@ -55,15 +56,15 @@ public class CompileJinjaMojo
         try {
             // Load the parameters
             Yaml yaml = new Yaml();
-            Map<String, Object> context = (Map<String, Object>) yaml.load(FileUtils.readFileToString(varFile));
+            Map<String, Object> context = (Map<String, Object>) yaml.load(FileUtils.readFileToString(varFile,(Charset)null));
 
             // Load template
             Jinjava jinjava = new Jinjava();
-            String template = FileUtils.readFileToString(templateFile);
+            String template = FileUtils.readFileToString(templateFile,(Charset)null);
 
             // Render and save
             String rendered = jinjava.render(template, context);
-            FileUtils.writeStringToFile(outputFile, rendered);
+            FileUtils.writeStringToFile(outputFile, rendered, (Charset)null);
         } catch(IOException e) {
             // Print error and exit with -1
             throw new MojoExecutionException(e.getLocalizedMessage(), e);
